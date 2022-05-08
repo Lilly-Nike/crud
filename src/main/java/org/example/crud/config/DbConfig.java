@@ -2,7 +2,6 @@ package org.example.crud.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -11,11 +10,13 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:db.properties")
 public class DbConfig {
 
@@ -33,10 +34,11 @@ public class DbConfig {
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
+                                                                Properties additionalProperties) {
         var factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setJpaProperties(additionalProperties());
+        factoryBean.setJpaProperties(additionalProperties);
         factoryBean.setPackagesToScan("org.example.crud.model");
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return factoryBean;
@@ -50,15 +52,20 @@ public class DbConfig {
     }
 
     @Bean
-    PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    private Properties additionalProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+    @Bean
+    Properties additionalProperties(@Value("${hibernate.hbm2ddl.auto}") String hbm2ddl,
+                                    @Value("${hibernate.show_sql}") String showSql,
+                                    @Value("${hibernate.dialect}") String dialect,
+                                    @Value("${hibernate.current-session_context_class}") String currentThread) {
+        var properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", hbm2ddl);
+        properties.setProperty("hibernate.show_sql", showSql);
+        properties.setProperty("hibernate.dialect", dialect);
+        properties.setProperty("hibernate.current-session_context_class", currentThread);
         return properties;
     }
 }
