@@ -6,16 +6,34 @@
 </head>
 <body>
 <div>
-  <form name="addUser" method="post" th:action="@{'/users/update'}" th:object="${user}">
-    <input hidden type="text" th:value="${user.id}" size="40" name="id">
+  <form name="updateUser" th:object="${user}">
+    <input hidden type="number" th:value="${user.id}" size="40" name="id" id="id">
     <p><b>Введите имя:</b><br>
-      <input type="text" th:value="${user.firstName}" size="40" name="firstName">
+      <input type="text" th:value="${user.firstName}" size="40" name="firstName" id="firstName">
     </p>
     <p><b>Введите фамилию:</b><br>
-      <input type="text" th:value="${user.lastName}" size="40" name="lastName">
+      <input type="text" th:value="${user.lastName}" size="40" name="lastName" id="lastName">
     </p>
-    <p><input type="submit" value="Обновить"></p>
+    <p><input type="button" value="Обновить" onclick="updateUserOnClick()"></p>
   </form>
 </div>
+<script>
+  function updateUserOnClick() {
+    const id = document.getElementById("id").value
+    const firstName = document.getElementById("firstName").value
+    const lastName = document.getElementById("lastName").value
+    fetch('http://localhost:8080/users/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": id,
+        "firstName": firstName,
+        "lastName": lastName
+      })
+    }).then(response => location.href = response.url)
+  }
+</script>
 </body>
 </html>
