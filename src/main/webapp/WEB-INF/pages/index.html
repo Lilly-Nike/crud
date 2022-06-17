@@ -6,15 +6,13 @@
 </head>
 <body>
 <div>
-    <h4><button onclick="openCreatePage()">Добавить</button></h4>
+    <h4><a th:href="@{/users/add}">Добавить</a></h4>
     <table border="1">
         <thead>
         <tr>
             <td>Id</td>
             <td>Имя</td>
             <td>Фамилия</td>
-            <td>Редактировать</td>
-            <td>Удалить</td>
         </tr>
         </thead>
         <tbody>
@@ -22,28 +20,11 @@
             <td th:text="${u.id}"></td>
             <td th:text="${u.firstName}"></td>
             <td th:text="${u.lastName}"></td>
-            <td><button th:id="${u.id}" onclick="openEditPage(this.id)">Редактировать</button></td>
-            <td><button th:id="${u.id}" onclick="deleteUserOnClick(this.id)">Удалить</button> </td>
+            <td><a th:href="@{'/users/update/' + ${u.id}}">Редактировать</a></td>
+            <td><a th:href="@{'/users/delete/' + ${u.id}}">Удалить</a> </td>
         </tr>
         </tbody>
     </table>
 </div>
-<script>
-    function openCreatePage() {
-        fetch('http://localhost:8080/users/add/', {
-            method: 'GET'
-        }).then(response => location.href = response.url)
-    }
-    function openEditPage(id) {
-        fetch('http://localhost:8080/users/update/' + id, {
-            method: 'GET'
-        }).then(response => location.href = response.url)
-    }
-    function deleteUserOnClick(id) {
-        fetch('http://localhost:8080/users/delete/' + id, {
-            method: 'DELETE'
-        }).then(response => location.href = response.url)
-    }
-</script>
 </body>
 </html>
