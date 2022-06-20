@@ -2,18 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Main</title>
+    <title>Добавить пользователя</title>
 </head>
 <body>
 <div>
-    <form name="addUser" method="post" th:action="@{/users/add}">
+    <form name="addUser" method="post" th:action="@{/users}">
         <p><b>Введите имя:</b><br>
             <input type="text" size="40" name="firstName">
         </p>
         <p><b>Введите фамилию:</b><br>
             <input type="text" size="40" name="lastName">
         </p>
-        <p><input type="submit"></p>
+        <p><input type="submit" value="Добавить нового пользователя"></p>
     </form>
 </div>
 </body>

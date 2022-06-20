@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Main</title>
+    <title>Пользователи</title>
 </head>
 <body>
 <div>
@@ -20,8 +20,16 @@
             <td th:text="${u.id}"></td>
             <td th:text="${u.firstName}"></td>
             <td th:text="${u.lastName}"></td>
-            <td><a th:href="@{'/users/update/' + ${u.id}}">Редактировать</a></td>
-            <td><a th:href="@{'/users/delete/' + ${u.id}}">Удалить</a> </td>
+            <td>
+                <form method="get" th:action="@{'/users/update/' + ${u.id}}">
+                    <input type="submit" value="Редактировать">
+                </form>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{'/users/' + ${u.id}}">
+                    <input type="submit" value="Удалить">
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

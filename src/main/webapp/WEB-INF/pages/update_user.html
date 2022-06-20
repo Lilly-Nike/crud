@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Main</title>
+  <title>Обновить пользователя</title>
 </head>
 <body>
 <div>
-  <form name="updateUser" method="post" th:object="${user}" th:action="@{/users/update}">
+  <form name="updateUser" th:method="PUT" th:object="${user}" th:action="@{/users}">
     <input hidden type="text" th:value="${user.id}" size="40" name="id">
     <p><b>Введите имя:</b><br>
       <input type="text" th:value="${user.firstName}" size="40" name="firstName">
@@ -14,7 +14,7 @@
     <p><b>Введите фамилию:</b><br>
       <input type="text" th:value="${user.lastName}" size="40" name="lastName">
     </p>
-    <p><input type="submit"></p>
+    <p><input type="submit" value="Обновить данные пользователя"></p>
   </form>
 </div>
 </body>
